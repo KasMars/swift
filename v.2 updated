@@ -1,0 +1,57 @@
+---- Updated Swift imoport Swift Log -----
+
+struct WorkLog: Codable {
+    var clockedIn: Bool
+    var clockInTime: Date?
+    var clockOutTime: Date?
+}
+
+class WorkLogManager {
+    static let shared = WorkLogManager()
+
+    private init() {}
+
+    func saveWorkLog(_ workLog: WorkLog) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(workLog) {
+            UserDefaults.standard.set(encoded, forKey: "workLog")
+        }
+    }
+
+    func loadWorkLog() -> WorkLog {
+        if let savedWorkLog = UserDefaults.standard.object(forKey: "workLog") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedWorkLog = try? decoder.decode(WorkLog.self, from: savedWorkLog) {
+                return loadedWorkLog
+            }
+        }
+        return WorkLog(clockedIn: false, clockInTime: nil, clockOutTime: nil)
+    }
+}
+
+var workLog = WorkLogManager.shared.loadWorkLog()
+
+func clockIn() {
+    workLog.clockedIn = true
+    workLog.clockInTime = Date()
+    WorkLogManager.shared.saveWorkLog(workLog)
+    updateUI()
+}
+
+func clockOut() {
+    workLog.clockedIn = false
+    workLog.clockOutTime = Date()
+    WorkLogManager.shared.saveWorkLog(workLog)
+    updateUI()
+}
+
+func updateUI() {
+    if workLog.clockedIn {
+        print("Clocked In")
+    } else {
+        print("Clocked Out")
+    }
+}
+
+// Example: Perform clock in
+clockIn()
