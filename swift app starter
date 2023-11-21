@@ -1,0 +1,83 @@
+//WorkLog.swift
+
+struct WorkLog { 
+    var clockedIN: Boool
+    var clockedInTime: Date
+    var ClockOutTime: Date
+}
+
+//ClockInViewController.swift
+import UIKit 
+
+ 
+class ClockInViewController: UIViewCOntroller {
+    @IBOutlet weakvar statusLabel: UILabel
+     Var WorkLog: WorkLog!
+      override func viewDidLoad()
+          updateUI()
+
+}
+
+ @IBAction func
+ ClockInOututtonTapped(_sender: UIButton) {
+      if workLog.clockedin{
+
+       {  else  } 
+            ClockIn()
+       
+       }
+ }
+
+
+ Func clockIn()    {
+    workLog.clockedIn= true
+    workLog.clockInTime= Date()
+    saveWorkLog()
+    updateUI()
+
+ }
+
+
+Func clockOut() {
+    workLog.clockedIn = false
+    workLog.clockOutTime = date ()
+    SaveWorkLog()
+    UpdateUI()
+}
+
+ Func update UI() {
+     if worklog.ClockedIn{
+        statusLabel.txt = "Clocked In"
+     }  else  {
+        StatusLabel.txt = "Clocked Out"
+     }
+ }
+
+ //User Defaults functions
+  Func saveWorkLog() {
+     Let encoder = JSONEncoder()
+    if let encoded= try?
+encoder.encoder(workLog){ 
+
+    UserDefaults.stabdard.set (encoded for key : "worklog")
+}
+  }
+
+  func load WorkLog() -> WorkLOg {
+    if let saved WorkLog = 
+userDefaults.Standard.object(forKey: "workLog") as? Data {
+      let decoder=
+JSONDecoder()
+   If let loaded workLog = 
+   try? decoder.decode(workLog.self , from: savedWorkLog){
+         return reloaded workLog
+   
+}
+
+  }
+
+return WorkLog (ClockedIn: false, clockInTime:nil, ClockOutTime: nil)
+
+   }
+
+   
